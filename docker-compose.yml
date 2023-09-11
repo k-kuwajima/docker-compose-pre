@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: ./app
+    volumes:
+      - ./src/:/app
+
+  db:
+    container_name: db
+    build:
+      context: ./db
+    ports:
+      - 5432:5432
+    volumes:
+      - db-store:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_PASSWORD=password
+
+  web:
+    container_name: web
+    build:
+      context: ./web
+    ports:
+      - 8080:80
+    depends_on:
+      - app
+      - db
+    volumes:
+      - ./src/:/app
+
+volumes:
+  db-store:
