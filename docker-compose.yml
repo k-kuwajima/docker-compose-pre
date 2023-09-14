@@ -5,6 +5,8 @@ services:
     container_name: app
     build:
       context: ./app
+    depends_on:
+      - db
     volumes:
       - ./src/:/app
       - ./app/php.ini:/usr/local/etc/php/php.ini
@@ -29,7 +31,6 @@ services:
       - 8080:80
     depends_on:
       - app
-      - db
     volumes:
       - ./src/:/app
       - ./web/default.conf:/etc/nginx/conf.d/default.conf
